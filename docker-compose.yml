@@ -1,29 +1,20 @@
 name: sapiens-dedicated-server
 services:
   sapiens-server:
-    build: .
-    image: sapiens:latest
+    # build: .
+    image: devidian/sapiens:latest
     container_name: sapiens-ds-docker
     restart: unless-stopped
     volumes:
       # if you dont want to access files on your host machine you can comment this section
       # left side: your docker-host machine
       # right side: the paths in the image (!!do not change!!)
-      - /appdata/sapiens/data:/root/.local/share/majicjungle/sapiens
+      - /appdata/sapiens/data:/home/sapiens/.local/share/majicjungle/sapiens
       - /appdata/sapiens/server:/appdata/sapiens/server
     ports:
-      - target: 16161
-        published: 16161
-        protocol: udp
-        mode: host
-      - target: 16162
-        published: 16162
-        protocol: udp
-        mode: host
-      - target: 16168
-        published: 16168
-        protocol: tcp
-        mode: host
+      - 16161:16161/udp
+      - 16162:16162/udp
+      - 16168:16168/tcp
     environment: 
       - WORLD_NAME=MyCoolSapiensWorld
       - WORLD_SEED=MyCoolSeed

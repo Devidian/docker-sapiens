@@ -1,7 +1,5 @@
 FROM debian:bookworm-20240513-slim
 
-WORKDIR /root
-
 # ARG only available during build
 # never env DEBIAN_FRONTEND=noninteractive !!
 ARG DEBIAN_FRONTEND=noninteractive
@@ -25,9 +23,13 @@ RUN apt-get autoremove -qq -y && \
   apt-get -qq clean autoclean && \
   rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-# EXPOSE 16161
-# EXPOSE 16162
-# EXPOSE 16168
+RUN adduser sapiens --home /home/sapiens
+USER sapiens
+RUN mkdir -p /home/sapiens/.local/share/majicjungle/
 
-COPY entrypoint.sh /root/
-ENTRYPOINT /root/entrypoint.sh
+WORKDIR /home/sapiens
+
+COPY entrypoint.sh /home/sapiens/
+# if i dont switch back to root, entrypoint throws segmentationfault
+USER root
+ENTRYPOINT /home/sapiens/entrypoint.sh
