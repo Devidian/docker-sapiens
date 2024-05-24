@@ -6,6 +6,6 @@ tbd
 
 To build the image yourself use `docker build .`
 
-## Contrubute
+## Contribute
 
 If you have anything to improove this repository, feel free to add a new issue/discussion with feedback
