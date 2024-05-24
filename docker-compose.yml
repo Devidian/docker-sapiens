@@ -1,0 +1,38 @@
+name: sapiens-dedicated-server
+services:
+  sapiens-server:
+    build: .
+    image: sapiens:latest
+    container_name: sapiens-ds-docker
+    restart: unless-stopped
+    volumes:
+      # if you dont want to access files on your host machine you can comment this section
+      # left side: your docker-host machine
+      # right side: the paths in the image (!!do not change!!)
+      - /appdata/sapiens/data:/root/.local/share/majicjungle/sapiens
+      - /appdata/sapiens/server:/appdata/sapiens/server
+    ports:
+      - target: 16161
+        published: 16161
+        protocol: udp
+        mode: host
+      - target: 16162
+        published: 16162
+        protocol: udp
+        mode: host
+      - target: 16168
+        published: 16168
+        protocol: tcp
+        mode: host
+    environment: 
+      - WORLD_NAME=MyCoolSapiensWorld
+      - WORLD_SEED=MyCoolSeed
+      # optional args, leave empty if you dont use them
+      - ARG_DEBUG=-Y
+      - ARG_ADVERTISE=-a
+      # usage: --server-id SERVER_ID (-u) can optionally be supplied to control the player directory name where the worlds are saved. Should ideally be unique to the server, but can be anything that can be used as a directory name. If not supplied, a random string is generated and used.
+      # example: ARG_SERVER_ID=-u MyName
+      - ARG_SERVER_ID=
+      # if you want to change ports, do not forget to adjust ports above
+      - ARG_PORT=
+      - ARG_HTTP=
